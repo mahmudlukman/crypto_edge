@@ -14,8 +14,6 @@ const ResellNFT = () => {
   const router = useRouter();
   const { id, tokenURI } = router.query;
 
-  const [isLoading, setIsLoading] = useState(true);
-
   const fetchNFT = async () => {
     // if (!tokenURI) return;
 
@@ -23,7 +21,6 @@ const ResellNFT = () => {
 
     setPrice(data.price);
     setImage(data.image);
-    setIsLoading(false);
   };
 
   useEffect(() => {

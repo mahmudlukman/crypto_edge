@@ -4,51 +4,20 @@ import { useRouter } from 'next/router';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
-// import { Buffer } from 'buffer';
 
 import { NFTContext } from '../context/NFTContext';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import images from '../assets';
-
-// const projectId = process.env.NEXT_PUBLIC_INFURA_API_KEY;
-// const projectSecret = process.env.NEXT_PUBLIC_INFURA_API_KEY_SECRET;
-
-// // eslint-disable-next-line prefer-template
-// const auth = 'Basic ' + Buffer.from(`${projectId}:${projectSecret}`).toString('base64');
-
-// const client = create({
-//   host: 'ipfs.infura.io',
-//   port: 5001,
-//   protocol: 'https',
-//   headers: {
-//     authorization: auth,
-//   },
-// });
-
-// const client = ipfsHttpClient(`https://ipfs.infura.io:5001/api/v0/${apiKey}`);
+import Loader from '../components/Loader';
 
 const CreateNFT = () => {
-  const { uploadToIPFS, createNFT } = useContext(NFTContext);
+  const { uploadToIPFS, createNFT, isLoadingNFT } = useContext(NFTContext);
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, setFormInput] = useState({ price: '', name: '', description: '' });
   const { theme } = useTheme();
 
-  // const uploadToInfura = async (file) => {
-  //   try {
-  //     const added = await client.add({ content: file });
-
-  //     const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-  //     console.log({ url });
-
-  //     setFileUrl(url);
-  //   } catch (error) {
-  //     console.log('Error uploading file: ', error);
-  //   }
-  // };
-
   const onDrop = useCallback(async (acceptedFile) => {
-    // await uploadToInfura(acceptedFile[0]);
     const url = await uploadToIPFS(acceptedFile[0]);
     setFileUrl(url);
   }, []);
@@ -75,36 +44,15 @@ const CreateNFT = () => {
     [isDragActive, isDragReject, isDragAccept],
   );
 
-  // const [formInput, updateFormInput] = useState({
-  //   price: '',
-  //   name: '',
-  //   description: '',
-  // });
   const router = useRouter();
 
-  // const createMarket = async () => {
-  //   const { name, description, price } = formInput;
-  //   if (!name || !description || !price || !fileUrl) return;
-  //   /* first, upload to IPFS */
-  //   const data = JSON.stringify({ name, description, image: fileUrl });
-  //   try {
-  //     const added = await client.add(data);
-  //     const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-  //     /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-  //     await createSale(url, formInput.price);
-  //     router.push('/');
-  //   } catch (error) {
-  //     console.log('Error uploading file: ', error);
-  //   }
-  // };
-
-  // if (isLoadingNFT) {
-  //   return (
-  //     <div className="flexCenter" style={{ height: '51vh' }}>
-  //       <Loader />
-  //     </div>
-  //   );
-  // }
+  if (isLoadingNFT) {
+    return (
+      <div className="flexCenter" style={{ height: '51vh' }}>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center sm:px-4 p-12">
