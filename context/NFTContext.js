@@ -28,7 +28,7 @@ const fetchContract = (signerOrProvider) => new ethers.Contract(MarketAddress, M
 export const NFTProvider = ({ children }) => {
   const nftCurrency = 'ETH';
   const [currentAccount, setCurrentAccount] = useState('');
-  const [isLoadingNFT, setIsLoadingNFT] = useState(false);
+  // const [isLoadingNFT, setIsLoadingNFT] = useState(false);
 
   const fetchNFTs = async () => {
     // setIsLoadingNFT(false);
@@ -59,10 +59,10 @@ export const NFTProvider = ({ children }) => {
     const contract = fetchContract(signer);
     const listingPrice = await contract.getListingPrice();
 
-    const transaction = await contract.createToken(url, price, { value: listingPrice.toString() });
-    // const transaction = !isReselling
-    //   ? await contract.createToken(url, price, { value: listingPrice.toString() })
-    //   : await contract.resellToken(id, price, { value: listingPrice.toString() });
+    // const transaction = await contract.createToken(url, price, { value: listingPrice.toString() });
+    const transaction = !isReselling
+      ? await contract.createToken(url, price, { value: listingPrice.toString() })
+      : await contract.resellToken(id, price, { value: listingPrice.toString() });
 
     // setIsLoadingNFT(true);
     await transaction.wait();
@@ -103,7 +103,7 @@ export const NFTProvider = ({ children }) => {
     }
   };
 
-  const uploadToIPFS = async (file, setFileUrl) => {
+  const uploadToIPFS = async (file) => {
     try {
       const added = await client.add({ content: file });
 
@@ -158,7 +158,7 @@ export const NFTProvider = ({ children }) => {
   }, []);
 
   return (
-    <NFTContext.Provider value={{ nftCurrency, createSale, fetchNFTs, connectWallet, createNFT, fetchMyNFTsOrCreatedNFTs, buyNft, currentAccount, isLoadingNFT, uploadToIPFS }}>
+    <NFTContext.Provider value={{ nftCurrency, createSale, fetchNFTs, connectWallet, createNFT, fetchMyNFTsOrCreatedNFTs, buyNft, currentAccount, uploadToIPFS }}>
       {children}
     </NFTContext.Provider>
   );

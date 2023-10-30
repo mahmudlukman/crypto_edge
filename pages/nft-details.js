@@ -158,7 +158,7 @@ const NFTDetails = () => {
               <Button
                 btnName="Cancel"
                 btnType="outline"
-                classStyles="ml-5 sm:ml-0 sm:mb-5 rounded-xl"
+                classStyles=" rounded-xl"
                 handleClick={() => setPaymentModal(false)}
               />
             </div>
